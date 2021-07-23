@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import BookListItem from '../book-list-item';
 import Spinner from '../spinner';
 import ErrorIndicator from '../error-indicator';
@@ -84,24 +85,31 @@ const mapStateToProps = ({ bookList: { books, loading, error } }) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { bookstoreService } = ownProps;
-  return {
-    // fetchBooks: () => {
-    //   // const { bookstoreService, booksLoaded, booksRequested, booksError } = this.props;
+  // return {
+  // fetchBooks: () => {
+  //   // const { bookstoreService, booksLoaded, booksRequested, booksError } = this.props;
 
-    //   dispatch(booksRequested());
-    //   bookstoreService
-    //     .getBooks()
-    //     .then((data) => {
-    //       dispatch(booksLoaded(data));
-    //     })
-    //     .catch((error) => {
-    //       dispatch(booksError(error));
-    //     });
-    // },
+  //   dispatch(booksRequested());
+  //   bookstoreService
+  //     .getBooks()
+  //     .then((data) => {
+  //       dispatch(booksLoaded(data));
+  //     })
+  //     .catch((error) => {
+  //       dispatch(booksError(error));
+  //     });
+  // },
+  // };
 
-    fetchBooks: fetchBooks(bookstoreService, dispatch),
-    onAddedToCart: (id) => dispatch(bookAddedToCart(id)),
-  };
+  return bindActionCreators(
+    {
+      // fetchBooks: fetchBooks(bookstoreService, dispatch),
+      // with redux-thunk below
+      fetchBooks: fetchBooks(bookstoreService),
+      onAddedToCart: bookAddedToCart,
+    },
+    dispatch,
+  );
 };
 
 export default compose(
